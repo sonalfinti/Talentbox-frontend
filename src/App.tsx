@@ -7,6 +7,7 @@ import RootLayout from "layouts/RootLayout";
 import SignIn from "./pages/auth/SignIn";
 import ForgetPassword from "pages/auth/ForgetPassword";
 import SignUp from "./pages/auth/SignUp";
+import ChangePassword from "./pages/auth/ChangePassword";
 import Dashboard from "pages/dashboard/Index";
 import Billing from "pages/dashboard/pages/Billing";
 import Pricing from "pages/dashboard/pages/Pricing";
@@ -149,6 +150,11 @@ const App = () => {
           id: "forget-password",
           path: "forget-password",
           Component: ForgetPassword,
+        },
+        {
+          id: "change-password",
+          path: "change-password",
+          Component: ChangePassword,
         },
       ],
     },
