@@ -65,11 +65,17 @@ export const DashboardMenu: DashboardMenuProps[] = [
   //     },
   //   ],
   // },
+  // {
+  //   id: uuid(),
+  //   title: "Add Applicant",
+  //   icon: "layout",  
+  //   link: "/layout-vertical",
+  // },
   {
     id: uuid(),
     title: "Add Applicant",
-    icon: "layout",
-    link: "/layout-vertical",
+    icon: "layout",  
+    link: "/add_applicants",
   },
   {
     id: uuid(),
