@@ -7,6 +7,7 @@ import RootLayout from "layouts/RootLayout";
 import SignIn from "./pages/auth/SignIn";
 import ForgetPassword from "pages/auth/ForgetPassword";
 import SignUp from "./pages/auth/SignUp";
+import SignUpAdmin from "./pages/auth/SignUpAdmin";
 import ChangePassword from "./pages/auth/ChangePassword";
 import Dashboard from "pages/dashboard/Index";
 import Billing from "pages/dashboard/pages/Billing";
@@ -145,6 +146,11 @@ const App = () => {
           id: "sign-up",
           path: "sign-up",
           Component: SignUp,
+        },
+        {
+          id: "sign-up-admin",
+          path: "sign-up-admin",
+          Component: SignUpAdmin,
         },
         {
           id: "forget-password",
