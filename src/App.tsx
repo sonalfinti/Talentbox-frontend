@@ -20,6 +20,9 @@ import LayoutVertical from "pages/dashboard/LayoutVertical";
 import Documentation from "pages/dashboard/Documentation";
 import ChangeLog from "pages/dashboard/Changelog";
 import ApiDemo from "./pages/dashboard/pages/ApiDemo";
+import ApplicantsTables from "./pages/Tables/ApplicantsTables";
+import Applicant from "./components/StepperForm/index"
+
 
 // import bootstrap components
 // import Accordion from "bootstrap-components/Accordions";
@@ -104,7 +107,13 @@ const App = () => {
         {
           id: "add_applicants",
           path: "/add_applicants",
-          Component: AddForm,
+          // Component: AddForm,
+          Component: Applicant,
+        },
+        {
+          id: "applicants-table",
+          path: "/applicants-table",
+          Component: ApplicantsTables,
         },
         // {
         //   id: "components",
