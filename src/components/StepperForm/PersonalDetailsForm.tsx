@@ -5,24 +5,34 @@ import { Button } from '@mui/material';
 import { personalDetailsSchema } from '../../validation/validationSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Col, Row, Form } from 'react-bootstrap';
-// import Select, { SelectChangeEvent } from '@mui/material/Select';
-// import FormLabel from '@mui/material/FormLabel';
-// import MenuItem from '@mui/material/MenuItem';
-// import FormControl from '@mui/material/FormControl';
+import { useState, useEffect } from 'react';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import { InputLabel } from '@mui/material';
 
+interface Gender {
+  label: string;
+  value: string;
+}
 
-// interface Country {
-//   label: string;
-//   value: string;
-// }
+interface Country {
+  label: string;
+  value: string;
+}
 
-// interface City {
-//   label: string;
-//   value: string;
-// }
+interface State {
+  label: string;
+  value: string;
+}
 
-// // Define a union type for country keys
-// type CountryKey = 'usa' | 'india' | 'canada';
+interface DropdownData {
+  countries: Country[];
+  states: Record<string, State[]>;  // key is the country value
+  genders: Gender[];
+}
+
 
 interface PersonalDetailsFormProps {
   onNext: (data: any) => void;
@@ -40,43 +50,65 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
     console.log("Personal Details Submitted:", data);
     onNext(data);
   };
+  const [data, setData] = useState<DropdownData | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedState, setSelectedState] = useState<string>('');
+  const [selectedGender, setSelectedGender] = useState<string>('');
 
 
-  // const [country, setCountry] = React.useState<CountryKey | null>(null); // Use the CountryKey type
-  // const [city, setCity] = React.useState<string>('');
+  const mockData: DropdownData = {
+    countries: [
+      { label: 'USA', value: 'usa' },
+      { label: 'India', value: 'india' },
+      { label: 'Canada', value: 'canada' }
+    ],
+    states: {
+      usa: [
+        { label: 'California', value: 'california' },
+        { label: 'New York', value: 'new-york' }
+      ],
+      india: [
+        { label: 'Delhi', value: 'delhi' },
+        { label: 'Mumbai', value: 'mumbai' }
+      ],
+      canada: [
+        { label: 'Ontario', value: 'ontario' },
+        { label: 'Quebec', value: 'quebec' }
+      ]
+    },
+    genders: [
+      { label: 'Male', value: 'male' },
+      { label: 'Female', value: 'female' },
+      { label: 'Other', value: 'other' }
+    ]
+  };
 
-  // const handleCountryChange = (event: SelectChangeEvent) => {
-  //   const selectedCountry = event.target.value as CountryKey; // Cast to CountryKey
-  //   setCountry(selectedCountry);
-  //   setCity(''); // Reset city selection when country changes
-  // };
+  useEffect(() => {
+    // Simulate API call
+    setTimeout(() => {
+      setData(mockData);
+    }, 1000);
+  }, []);
 
-  // const handleCityChange = (event: SelectChangeEvent) => {
-  //   setCity(event.target.value as string);
-  // };
+  const handleCountryChange = (event: SelectChangeEvent) => {
+    const country = event.target.value;
+    setSelectedCountry(country);
+    setSelectedState(''); // Reset state when country changes
+  };
 
-  // const countries: Country[] = [
-  //   { label: 'USA', value: 'usa' },
-  //   { label: 'India', value: 'india' },
-  //   { label: 'Canada', value: 'canada' },
-  // ];
+  const handleStateChange = (event: SelectChangeEvent) => {
+    setSelectedState(event.target.value);
+  };
 
-  // const citiesByCountry: Record<CountryKey, City[]> = {
-  //   usa: [
-  //     { label: 'New York', value: 'new-york' },
-  //     { label: 'Los Angeles', value: 'los-angeles' },
-  //   ],
-  //   india: [
-  //     { label: 'Delhi', value: 'delhi' },
-  //     { label: 'Mumbai', value: 'mumbai' },
-  //   ],
-  //   canada: [
-  //     { label: 'Toronto', value: 'toronto' },
-  //     { label: 'Vancouver', value: 'vancouver' },
-  //   ],
-  // };
+  const handleGenderChange = (event: SelectChangeEvent) => {
+    setSelectedGender(event.target.value);
+  };
 
-  // const cities: City[] = country ? citiesByCountry[country] : [];
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  const { countries, states, genders } = data;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="p-3">
@@ -99,6 +131,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
               type="text"
               {...register("firstName")}
               isInvalid={!!errors.firstName}
+              placeholder='FirstName'
             />
             <Form.Control.Feedback type="invalid">
               {errors.firstName?.message}
@@ -111,8 +144,11 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
             <Form.Control
               type="text"
               {...register("middleName")}
-              placeholder="Middle Name"
+              placeholder="MiddleName"
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.middleName?.message}
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
         <Col sm={3}>
@@ -122,6 +158,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
               type="text"
               {...register("lastName")}
               isInvalid={!!errors.lastName}
+              placeholder="LastName"
             />
             <Form.Control.Feedback type="invalid">
               {errors.lastName?.message}
@@ -150,6 +187,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
               type="email"
               {...register("email")}
               isInvalid={!!errors.email}
+              placeholder='Email'
             />
             <Form.Control.Feedback type="invalid">
               {errors.email?.message}
@@ -163,6 +201,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
               type="text"
               {...register("phoneNumber")}
               isInvalid={!!errors.phoneNumber}
+              placeholder='Phone Number'
             />
             <Form.Control.Feedback type="invalid">
               {errors.phoneNumber?.message}
@@ -175,31 +214,33 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
             <Form.Control
               type="text"
               {...register("whatsappNumber")}
+              isInvalid={!!errors.whatsappNumber}
               placeholder="WhatsApp Number"
             />
-            <p className='p-1 text-red-500'>{errors.whatsappNumber?.message}</p>
+            <Form.Control.Feedback type="invalid">
+              {errors.whatsappNumber?.message}
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
 
       </Row>
       <Row className="mb-3">
-        {/* <Col sm={6}>
-          <Form.Group controlId="dateOfBirth">
-            <Form.Label>Date of Birth</Form.Label>
-            <Form.Control
-              type="date"
-              {...register("dateOfBirth")}
-              isInvalid={!!errors.dateOfBirth}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.dateOfBirth?.message}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Col> */}
-        {/* <Col sm={3}>
+        <Col sm={2}>
+          <FormControl fullWidth>
+            <FormLabel>Gender</FormLabel>
+            <Select value={selectedGender} onChange={handleGenderChange} className='h-10 my-1' >
+              {genders.map((gender) => (
+                <MenuItem key={gender.value} value={gender.value}  >
+                  {gender.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Col>
+        <Col sm={4}>
           <FormControl fullWidth>
             <FormLabel>Country</FormLabel>
-            <Select value={country} onChange={handleCountryChange} label="Country">
+            <Select value={selectedCountry || ''} onChange={handleCountryChange} className='h-10 my-1' >
               {countries.map((country) => (
                 <MenuItem key={country.value} value={country.value}>
                   {country.label}
@@ -207,19 +248,34 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
               ))}
             </Select>
           </FormControl>
+
         </Col>
         <Col sm={3}>
-          <FormControl fullWidth>
-            <FormLabel>City</FormLabel>
-            <Select value={city} onChange={handleCityChange} label="City">
-              {cities.map((city) => (
-                <MenuItem key={city.value} value={city.value}>
-                  {city.label}
+          <FormControl fullWidth >
+            <FormLabel>State</FormLabel>
+            <Select className='h-10 my-1'
+              value={selectedState}
+              onChange={handleStateChange}
+              disabled={!selectedCountry}
+              displayEmpty
+            >
+
+              {!selectedCountry && (
+                <MenuItem value="" disabled>
+                  State
+                </MenuItem>
+              )}
+
+
+              {(selectedCountry && states[selectedCountry])?.map((state) => (
+                <MenuItem key={state.value} value={state.value}>
+                  {state.label}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-        </Col> */}
+        </Col>
+
         <Col sm={3}>
           <Form.Group controlId="pincode">
             <Form.Label>Pincode</Form.Label>
@@ -227,6 +283,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
               type="text"
               {...register("pincode")}
               isInvalid={!!errors.pincode}
+              placeholder='Enter Pincode'
             />
             <Form.Control.Feedback type="invalid">
               {errors.pincode?.message}
@@ -242,6 +299,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
               type="text"
               {...register("fullAddress")}
               isInvalid={!!errors.fullAddress}
+              placeholder="Enter Full Address"
             />
             <Form.Control.Feedback type="invalid">
               {errors.fullAddress?.message}
@@ -249,8 +307,22 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ onNext, onCan
           </Form.Group>
         </Col>
       </Row>
-      <Button type="button" onClick={onCancel}>Cancel</Button>
-      <Button type="submit">Next</Button>
+      <div className="flex justify-end space-x-4">
+        <Button
+          type="button"
+          onClick={onCancel}
+          className="!bg-red-500  text-white hover:bg-red-600 focus:ring-2 focus:ring-red-500 px-4 py-2 rounded"
+        >
+          Cancel
+        </Button>
+
+        <Button
+          type="submit"
+          className="!bg-purple-600 font-bold text-white hover:bg-purple-700  focus:ring-2 focus:ring-purple-500 px-4 py-2 rounded"
+        >
+          Next
+        </Button>
+      </div>
     </Form>
   );
 };

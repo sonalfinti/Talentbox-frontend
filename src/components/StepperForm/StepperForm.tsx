@@ -38,12 +38,12 @@ const StepperForm: React.FC = () => {
 
   const handleSubmit = () => {
     console.log("Final Submission Data:", formData);
-    // Here you can handle the final submission logic, e.g., sending data to an API
+    //  sending data to an API
   };
 
   return (
     <Card>
-      <h4 className="m-2 p-1 text-dark justify-center content-start text-2xl text-center font-bold">Applicants Form</h4>
+      <h4 className="m-2 p-1 text-dark justify-center content-start text-2xl text-center font-bold">Applicant Form</h4>
       <Card.Body>
         <Box sx={{ width: '100%' }}>
           <Stepper activeStep={activeStep}>

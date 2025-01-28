@@ -7,13 +7,13 @@ import { Container } from "react-bootstrap";
 
 function Applicant() {
   return (
-    // <div className="App"> 
+   
     <Container fluid className="p-6 ">
       
       <StepperForm />
       <ToastContainer />console.log("Applicant component rendered");
       </Container>
-    // </div>
+  
   );
 }
 
